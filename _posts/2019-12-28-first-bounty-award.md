@@ -1,6 +1,6 @@
 ---
-title: "Welcome to Jekyll!"
-published: false
+title: "How I made $7500 from My First Bug Bounty"
+published: true
 ---
 
 **Hello world**, this is my first Jekyll blog post.
