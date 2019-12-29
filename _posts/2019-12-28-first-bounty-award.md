@@ -27,26 +27,26 @@ about the situation I would have known this from the start).
 
 After discovering the jupyter server I started doing some basic research about the setup for
 the server. From the documentation I learned where the config would be on the host. The config 
-showed my that the server was running on port 8080 and that I also took note of what looked like
+showed that the server was running on port 8080 and that I also took note of what looked like
 a typo in the jupyter_notebook_config.py file.
 
 ```
 c.NotebookApp.allow_origin_pat =  '(^https://8080-dot-[0-9]+-dot-devshell.appspot.com$)|(^https://colab.research.google.com$)|((https?://)?[0-9a-z]+-dot-datalab-vm[-0-9a-z]*.googleusercontent.com)’
 ```
 
-Since I think there's a server running on port 8080, I find the external IP address for the machine
-and see what comes up in the browser. Sure enough, it takes me to the jupyter server interface.
+Since I thought there was a server running on port 8080, I found the external IP address for the machine
+and checked what came up in the browser. Sure enough, it takes me to the jupyter server interface.
 I poke around a bit to see what I can do, and to be sure that my local cookies/etc aren't giving me
 access I do this from a machine I don't access work projects from and through an incognito browser.
 After about ten minutes I establish that I can run a terminal inside the browser, and I can do anything
 I want with root permissions. What's worse is that a slightly stale version of our companies primary project
 repository is on the machine. 
 
-At this point I'm thinking someone at my company spun up a random virtual machine, starting running
+At this point I'm thinking someone at my company spun up a virtual machine, started running
 a jupyter server and pretty much left the keys to the kingdom exposed. I quickly get on the email 
-thread with our CTO and explain what I've found. I also recommended shutting down the machine immediately
+thread with our CTO and explain what I found. I also recommended shutting down the machine immediately
 since there were few certainties about what the original attacker was able to accomplish with
-their time on the host. I also start asking mroe questions about how they typically access the machine
+their time on the host. I also start asking more questions about how they typically access the machine
 and who created it. That's when my CTO shares a URL for the google cloud console which finally gives me
 the entire context.
 
@@ -55,8 +55,9 @@ shared led me to the google cloud dashboard for the notebooks under the AI categ
 After spinning up another instance like the one my company used I determined this was the default 
 configuration. This is also where I determined that the access to these machines was meant to be
 funneled through the cloud console UI. Inside the dashboard for your notebook instances , there 
-were links to access each one. The typo I found earlier was meant to be a regex to prevent accessing
-the machine if you didn't come from the correct origin URL.
+were links to access each instance. The typo I found earlier was meant to apply a regex to prevent accessing
+the machine if you didn't come from the correct origin URL. Implying you would access these machines
+from the google cloud console where you are already authenticated.
 
 Initially we tried to report this issue to the team that contacted us about the policy violation.
 When they indicated they were unable to act on the information, I decided it was serious enough
